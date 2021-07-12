@@ -109,6 +109,7 @@ message WorkflowExecutionContinuedAsNewEventAttributes {
     temporal.api.enums.v1.ContinueAsNewInitiator initiator = 9;
     temporal.api.failure.v1.Failure failure = 10;
     temporal.api.common.v1.Payloads last_completion_result = 11;
+    temporal.api.enums.v1.WorkflowExecutionStatus last_status = 15;
     temporal.api.common.v1.Header header = 12;
     temporal.api.common.v1.Memo memo = 13;
     temporal.api.common.v1.SearchAttributes search_attributes = 14;

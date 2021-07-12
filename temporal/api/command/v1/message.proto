@@ -142,6 +142,7 @@ message ContinueAsNewWorkflowExecutionCommandAttributes {
     temporal.api.enums.v1.ContinueAsNewInitiator initiator = 8;
     temporal.api.failure.v1.Failure failure = 9;
     temporal.api.common.v1.Payloads last_completion_result = 10;
+    temporal.api.enums.v1.WorkflowExecutionStatus last_status = 15;
     string cron_schedule = 11;
     temporal.api.common.v1.Header header = 12;
     temporal.api.common.v1.Memo memo = 13;

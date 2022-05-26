@@ -47,6 +47,10 @@ message NamespaceInfo {
     // A key-value map for any customized purpose.
     map<string, string> data = 5;
     string id = 6;
+
+    // This is only needed temporarily while the feature is experimental, so
+    // give it a high tag.
+    bool supports_schedules = 100;
 }
 
 message NamespaceConfig {

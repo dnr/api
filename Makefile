@@ -30,20 +30,25 @@ PROTO_IMPORTS = \
 
 $(PROTO_OUT):
 	mkdir $(PROTO_OUT)
+	cp gen/* $(PROTO_OUT)
 
 ##### Compile proto files for go #####
-grpc: buf-lint api-linter buf-breaking gogo-grpc fix-path
+grpc: buf-lint api-linter buf-breaking gogo-grpc fix-path check-annotations
 
 gogo-grpc: clean $(PROTO_OUT)
 	printf $(COLOR) "Compile for gogo-gRPC..."
 	$(foreach PROTO_DIR,$(PROTO_DIRS),\
 		protoc --fatal_warnings $(PROTO_IMPORTS) \
-			--gogoslick_out=Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/descriptor.proto=github.com/golang/protobuf/protoc-gen-go/descriptor,Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc,paths=source_relative:$(PROTO_OUT) \
+			--gogoslick_out=Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/descriptor.proto=github.com/gogo/protobuf/protoc-gen-gogo/descriptor,Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc,paths=source_relative:$(PROTO_OUT) \
 			--grpc-gateway_out=allow_patch_feature=false,paths=source_relative:$(PROTO_OUT) \
 		$(PROTO_DIR)*.proto;)
 
 fix-path:
 	mv -f $(PROTO_OUT)/temporal/api/* $(PROTO_OUT) && rm -rf $(PROTO_OUT)/temporal
+
+check-annotations:
+	printf $(COLOR) "Checking annotations..."
+	cd $(PROTO_OUT) && go run check_annotations.go
 
 ##### Plugins & tools #####
 grpc-install: gogo-protobuf-install

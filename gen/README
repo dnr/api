@@ -1,0 +1,4 @@
+
+These files are copied into .gen so that the generated files can be imported by
+tools in this repo for checking.
+

@@ -350,3 +350,38 @@ message TaskQueueConfig {
     // If set, overrides the fairness weights for the corresponding fairness keys.
     map<string, float> fairness_weight_overrides = 3;
 }
+
+// TODO: document more
+message FlowController {
+    // Flow controllers are keyed, and the keys have namespace scope.
+    string key = 1;
+
+    oneof controller {
+        Concurrency concurrency = 2;
+        Rate rate = 3;
+        CircuitBreaker circuit_breaker = 4;
+    }
+
+    message Concurrency {
+        int32 maximum = 1;
+        // If soft is true, limit may be exceeded in rare situations.
+        bool soft = 2;
+    }
+
+    message Rate {
+        float rate = 1;
+    }
+
+    message CircuitBreaker {
+        // How many consecutive failures required to trip (default 5).
+        int32 consecutive_failures = 1;
+        // Maximum number of requests allowed to pass through when
+        // it is in half-open state (default 1).
+        int32 max_requests = 2;
+        // Cyclic period in closed state to clear the internal counts;
+        // if interval is 0, then it never clears the internal counts (default 0).
+        google.protobuf.Duration interval = 3;
+        // Period of open state before changing to half-open state (default 60s).
+        google.protobuf.Duration timeout = 4;
+    }
+}

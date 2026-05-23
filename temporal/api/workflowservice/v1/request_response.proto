@@ -3159,6 +3159,8 @@ message StartActivityExecutionRequest {
     temporal.api.sdk.v1.UserMetadata user_metadata = 17;
     // Priority metadata.
     temporal.api.common.v1.Priority priority = 18;
+    // Flow controllers attached to this activity.
+    repeated temporal.api.taskqueue.v1.FlowController flow_controllers = 23;
     // Callbacks to be called by the server when this activity reaches a terminal state.
     // Callback addresses must be whitelisted in the server's dynamic configuration.
     repeated temporal.api.common.v1.Callback completion_callbacks = 19;

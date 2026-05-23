@@ -338,6 +338,9 @@ message PendingActivityInfo {
     // present, they inherit the values from the workflow.
     temporal.api.common.v1.Priority priority = 22;
 
+    // Flow controllers attached to this activity.
+    repeated temporal.api.taskqueue.v1.FlowController flow_controllers = 26;
+
     message PauseInfo {
         // The time when the activity was paused.
         google.protobuf.Timestamp pause_time = 1;

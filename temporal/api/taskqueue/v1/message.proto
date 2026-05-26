@@ -351,9 +351,14 @@ message TaskQueueConfig {
     map<string, float> fairness_weight_overrides = 3;
 }
 
-// TODO: document more
+// FlowControllers are attached to activity executions. Each activity may have zero or more flow
+// controllers, up to some configured limit. The configuration of the controller may be provided
+// inline with the request to use that controller for simplicity, but the configuration may also
+// be updated by calls to UpdateFlowControllerConfig, which will override the inline
+// configuration.
 message FlowController {
-    // Flow controllers are keyed, and the keys have namespace scope.
+    // Flow controllers are keyed, and the keys have namespace+controller type scope, i.e. the
+    // "concurrency" controller with key "a" and "rate" controller with key "a" are independent.
     string key = 1;
 
     oneof controller {

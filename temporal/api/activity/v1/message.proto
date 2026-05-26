@@ -19,6 +19,7 @@ import "temporal/api/callback/v1/message.proto";
 import "temporal/api/enums/v1/workflow.proto";
 import "temporal/api/failure/v1/message.proto";
 import "temporal/api/taskqueue/v1/message.proto";
+import "temporal/api/flowcontrol/v1/message.proto";
 import "temporal/api/sdk/v1/user_metadata.proto";
 
 // The outcome of a completed activity execution: either a successful result or a failure.
@@ -65,7 +66,7 @@ message ActivityOptions {
     temporal.api.common.v1.Priority priority = 7;
 
     // Flow controllers attached to this activity.
-    repeated temporal.api.taskqueue.v1.FlowController flow_controllers = 8;
+    repeated temporal.api.flowcontrol.v1.Controller flow_controllers = 8;
 }
 
 // Information about a standalone activity.
@@ -153,7 +154,7 @@ message ActivityExecutionInfo {
     temporal.api.common.v1.Priority priority = 26;
 
     // Flow controllers attached to this activity.
-    repeated temporal.api.taskqueue.v1.FlowController flow_controllers = 37;
+    repeated temporal.api.flowcontrol.v1.Controller flow_controllers = 37;
 
     // Incremented each time the activity's state is mutated in persistence.
     int64 state_transition_count = 27;

@@ -16,6 +16,7 @@ import "temporal/api/enums/v1/command_type.proto";
 import "temporal/api/common/v1/message.proto";
 import "temporal/api/failure/v1/message.proto";
 import "temporal/api/taskqueue/v1/message.proto";
+import "temporal/api/flowcontrol/v1/message.proto";
 import "temporal/api/sdk/v1/user_metadata.proto";
 
 message ScheduleActivityTaskCommandAttributes {
@@ -67,7 +68,7 @@ message ScheduleActivityTaskCommandAttributes {
     // present, they inherit the values from the workflow.
     temporal.api.common.v1.Priority priority = 14;
     // Flow controllers attached to this activity.
-    repeated temporal.api.taskqueue.v1.FlowController flow_controllers = 15;
+    repeated temporal.api.flowcontrol.v1.Controller flow_controllers = 15;
 }
 
 message RequestCancelActivityTaskCommandAttributes {

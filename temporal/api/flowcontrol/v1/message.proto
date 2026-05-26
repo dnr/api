@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package temporal.api.flowcontrol.v1;
+
+option go_package = "go.temporal.io/api/flowcontrol/v1;flowcontrol";
+option java_package = "io.temporal.api.flowcontrol.v1";
+option java_multiple_files = true;
+option java_outer_classname = "MessageProto";
+option ruby_package = "Temporalio::Api::flowcontrol::V1";
+option csharp_namespace = "Temporalio.Api.flowcontrol.V1";
+
+import "google/protobuf/duration.proto";
+
+
+// HardConcurrency is a concurrency limit that may not be exceeded. Certain failures may
+// result in temporary under-utilization.
+message HardConcurrency {
+    message Configuration {
+        // Available slots.
+        int32 slots = 1;
+        // Units for documentation only, not interpreted.
+        string units = 2;
+    }
+
+    message State {
+        // Current number of holders.
+        int32 holders = 1;
+        // Current number of reservations.
+        int32 reservations = 2;
+    }
+
+    message Task {
+        // How many slots does this task consume (default 1).
+        int32 task_cost = 1;
+    }
+
+    // Key is always present.
+    string key = 1;
+    // Configuration is present in Describe responses and Update requests. If it's present on
+    // tasks, it sets the default configuration for the flow controller (if it hasn't been
+    // configured with the Update api).
+    Configuration configuration = 2;
+    // State is present in Describe responses.
+    State state = 3;
+    // Task may be present when attached to tasks or on task completions that change the task
+    // cost after completion.
+    Task task = 4;
+}
+
+// SoftConcurrency is a concurrency limit that be exceeded under certain failure conditions.
+// It uses fewer durable transactions than HardConcurrency so it may be less expensive.
+message SoftConcurrency {
+    message Configuration {
+        // Available slots.
+        int32 slots = 1;
+        // Units for documentation only, not interpreted.
+        string units = 2;
+    }
+
+    message State {
+        // Current number of holders.
+        int32 holders = 1;
+        // Current number of reservations.
+        int32 reservations = 2;
+    }
+
+    message Task {
+        // How many slots does this task consume (default 1).
+        int32 task_cost = 1;
+    }
+
+    // Key is always present.
+    string key = 1;
+    // Configuration is present in Describe responses and Update requests. If it's present on
+    // tasks, it sets the default configuration for the flow controller (if it hasn't been
+    // configured with the Update api).
+    Configuration configuration = 2;
+    // State is present in Describe responses.
+    State state = 3;
+    // Task may be present when attached to tasks or on task completions that change the task
+    // cost after completion.
+    Task task = 4;
+}
+
+// Rate is a rate limit, using a token-bucket algorithm or equivalent.
+message Rate {
+    message Configuration {
+        // Rate in tokens/second.
+        float rate = 1;
+        // Allowed burst in tokens.
+        int32 burst = 2;
+        // Units for documentation only, not interpreted.
+        string units = 3;
+    }
+
+    message State {
+        // Measured rate over the last approximately one minute.
+        float rate_last_minute = 1;
+    }
+
+    message Task {
+        // How many tokens does this task consume (default 1).
+        int32 cost = 1;
+    }
+
+    // Key is always present.
+    string key = 1;
+    // Configuration is present in Describe responses and Update requests. If it's present on
+    // tasks, it sets the default configuration for the flow controller (if it hasn't been
+    // configured with the Update api).
+    Configuration configuration = 2;
+    // State is present in Describe responses.
+    State state = 3;
+    // Task may be present when attached to tasks or on task completions that change the task
+    // cost after completion.
+    Task task = 4;
+}
+
+// CircuitBreaker implements a 
+message CircuitBreaker {
+    message Configuration {
+        // How many consecutive failures required to trip (default 5).
+        int32 consecutive_failures = 1;
+        // Maximum number of requests allowed to pass through when
+        // it is in half-open state (default 1).
+        int32 max_requests = 2;
+        // Cyclic period in closed state to clear the internal counts;
+        // if interval is 0, then it never clears the internal counts (default 0).
+        google.protobuf.Duration interval = 3;
+        // Period of open state before changing to half-open state (default 60s).
+        google.protobuf.Duration timeout = 4;
+    }
+
+    message State {
+        string state = 1;
+    }
+
+    message Task {
+        // Used on task completion only.
+        bool failure = 1;
+    }
+
+    // Key is always present.
+    string key = 1;
+    // Configuration is present in Describe responses and Update requests. If it's present on
+    // tasks, it sets the default configuration for the flow controller (if it hasn't been
+    // configured with the Update api).
+    Configuration configuration = 2;
+    // State is present in Describe responses.
+    State state = 3;
+    // Task may be present when attached to tasks or on task completions that change the task
+    // cost after completion.
+    Task task = 4;
+}
+
+// Controllers can be attached to activity executions. Each activity may have zero or more flow
+// controllers, up to some configured limit. The default configuration of the controller may be
+// provided inline with the request to use that controller for simplicity, but the configuration
+// may also be updated by calls to UpdateFlowControllerConfig, which will override the inline
+// configuration.
+//
+// Flow controllers are keyed, and the keys have namespace+controller type scope, i.e. the hard
+// concurrency controller with key `limit1` and rate controller with key `limit1` are
+// independent.
+message Controller {
+    oneof controller {
+        HardConcurrency hard_concurrency = 1;
+        SoftConcurrency soft_concurrency = 2;
+        Rate rate = 3;
+        CircuitBreaker circuit_breaker = 4;
+    }
+}

@@ -38,6 +38,7 @@ import "temporal/api/rules/v1/message.proto";
 import "temporal/api/sdk/v1/worker_config.proto";
 import "temporal/api/schedule/v1/message.proto";
 import "temporal/api/taskqueue/v1/message.proto";
+import "temporal/api/flowcontrol/v1/message.proto";
 import "temporal/api/update/v1/message.proto";
 import "temporal/api/version/v1/message.proto";
 import "temporal/api/batch/v1/message.proto";
@@ -3001,17 +3002,17 @@ message DescribeFlowControllerRequest {
     // To indicate the requested controller type, the "key" field should be
     // filled in, and one of the "controller" fields should be filled with an
     // empty proto message.
-    temporal.api.taskqueue.v1.FlowController flow_controller = 2;
+    temporal.api.flowcontrol.v1.Controller flow_controller = 2;
 }
 
 message DescribeFlowControllerResponse {
-    temporal.api.taskqueue.v1.FlowController flow_controller = 1;
+    temporal.api.flowcontrol.v1.Controller flow_controller = 1;
 }
 
 message UpdateFlowControllerConfigRequest {
     string namespace = 1;
     string identity = 2;
-    temporal.api.taskqueue.v1.FlowController flow_controller = 3;
+    temporal.api.flowcontrol.v1.Controller flow_controller = 3;
 }
 
 message UpdateFlowControllerConfigResponse {
@@ -3181,7 +3182,7 @@ message StartActivityExecutionRequest {
     // Priority metadata.
     temporal.api.common.v1.Priority priority = 18;
     // Flow controllers attached to this activity.
-    repeated temporal.api.taskqueue.v1.FlowController flow_controllers = 23;
+    repeated temporal.api.flowcontrol.v1.Controller flow_controllers = 23;
     // Callbacks to be called by the server when this activity reaches a terminal state.
     // Callback addresses must be whitelisted in the server's dynamic configuration.
     repeated temporal.api.common.v1.Callback completion_callbacks = 19;

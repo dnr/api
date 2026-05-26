@@ -1584,6 +1584,22 @@ service WorkflowService {
         };
     }
 
+    // Updates flow controller configuration.
+    rpc UpdateFlowControllerConfig (UpdateFlowControllerConfigRequest) returns (UpdateFlowControllerConfigResponse) {
+        option (google.api.http) = {
+            post: "/namespaces/{namespace}/flow-controllers/{flow_controller.key}/update-config"
+            body: "*"
+            additional_bindings {
+                post: "/api/v1/namespaces/{namespace}/flow-controllers/{flow_controller.key}/update-config"
+                body: "*"
+            }
+        };
+        option (temporal.api.protometa.v1.request_header) = {
+            header: "temporal-resource-id"
+            value: "flow-controller:{flow_controller.key}"
+        };
+    }
+
     // FetchWorkerConfig returns the worker configuration for a specific worker.
     rpc FetchWorkerConfig (FetchWorkerConfigRequest) returns (FetchWorkerConfigResponse) {
         option (google.api.http) = {

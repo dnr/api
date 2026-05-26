@@ -1584,6 +1584,20 @@ service WorkflowService {
         };
     }
 
+    // Describes flow controller state.
+    rpc DescribeFlowController (DescribeFlowControllerRequest) returns (DescribeFlowControllerResponse) {
+        option (google.api.http) = {
+            get: "/namespaces/{namespace}/flow-controllers/{flow_controller.key}"
+            additional_bindings {
+                get: "/api/v1/namespaces/{namespace}/flow-controllers/{flow_controller.key}"
+            }
+        };
+        option (temporal.api.protometa.v1.request_header) = {
+            header: "temporal-resource-id"
+            value: "flow-controller:{flow_controller.key}"
+        };
+    }
+
     // Updates flow controller configuration.
     rpc UpdateFlowControllerConfig (UpdateFlowControllerConfigRequest) returns (UpdateFlowControllerConfigResponse) {
         option (google.api.http) = {

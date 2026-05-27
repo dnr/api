@@ -6,8 +6,8 @@ option go_package = "go.temporal.io/api/flowcontrol/v1;flowcontrol";
 option java_package = "io.temporal.api.flowcontrol.v1";
 option java_multiple_files = true;
 option java_outer_classname = "MessageProto";
-option ruby_package = "Temporalio::Api::flowcontrol::V1";
-option csharp_namespace = "Temporalio.Api.flowcontrol.V1";
+option ruby_package = "Temporalio::Api::FlowControl::V1";
+option csharp_namespace = "Temporalio.Api.FlowControl.V1";
 
 import "google/protobuf/duration.proto";
 
@@ -15,7 +15,7 @@ import "google/protobuf/duration.proto";
 // HardConcurrency is a concurrency limit that may not be exceeded. Certain failures may
 // result in temporary under-utilization.
 message HardConcurrency {
-    message Configuration {
+    message Config {
         // Available slots.
         int32 slots = 1;
         // Units for documentation only, not interpreted.
@@ -34,23 +34,21 @@ message HardConcurrency {
         int32 task_cost = 1;
     }
 
-    // Key is always present.
-    string key = 1;
-    // Configuration is present in Describe responses and Update requests. If it's present on
+    // Config is present in Describe responses and Update requests. If it's present on
     // tasks, it sets the default configuration for the flow controller (if it hasn't been
     // configured with the Update api).
-    Configuration configuration = 2;
+    Config config = 1;
     // State is present in Describe responses.
-    State state = 3;
+    State state = 2;
     // Task may be present when attached to tasks or on task completions that change the task
     // cost after completion.
-    Task task = 4;
+    Task task = 3;
 }
 
 // SoftConcurrency is a concurrency limit that be exceeded under certain failure conditions.
 // It uses fewer durable transactions than HardConcurrency so it may be less expensive.
 message SoftConcurrency {
-    message Configuration {
+    message Config {
         // Available slots.
         int32 slots = 1;
         // Units for documentation only, not interpreted.
@@ -69,22 +67,20 @@ message SoftConcurrency {
         int32 task_cost = 1;
     }
 
-    // Key is always present.
-    string key = 1;
-    // Configuration is present in Describe responses and Update requests. If it's present on
+    // Config is present in Describe responses and Update requests. If it's present on
     // tasks, it sets the default configuration for the flow controller (if it hasn't been
     // configured with the Update api).
-    Configuration configuration = 2;
+    Config config = 1;
     // State is present in Describe responses.
-    State state = 3;
+    State state = 2;
     // Task may be present when attached to tasks or on task completions that change the task
     // cost after completion.
-    Task task = 4;
+    Task task = 3;
 }
 
 // Rate is a rate limit, using a token-bucket algorithm or equivalent.
 message Rate {
-    message Configuration {
+    message Config {
         // Rate in tokens/second.
         float rate = 1;
         // Allowed burst in tokens.
@@ -103,22 +99,21 @@ message Rate {
         int32 cost = 1;
     }
 
-    // Key is always present.
-    string key = 1;
-    // Configuration is present in Describe responses and Update requests. If it's present on
+    // Config is present in Describe responses and Update requests. If it's present on
     // tasks, it sets the default configuration for the flow controller (if it hasn't been
     // configured with the Update api).
-    Configuration configuration = 2;
+    Config config = 1;
     // State is present in Describe responses.
-    State state = 3;
+    State state = 2;
     // Task may be present when attached to tasks or on task completions that change the task
     // cost after completion.
-    Task task = 4;
+    Task task = 3;
 }
 
-// CircuitBreaker implements a 
+// CircuitBreaker implements circuit breaker logic that trips on a number of consecutive
+// failures and tries a small number of tasks at a time to probe for recovery.
 message CircuitBreaker {
-    message Configuration {
+    message Config {
         // How many consecutive failures required to trip (default 5).
         int32 consecutive_failures = 1;
         // Maximum number of requests allowed to pass through when
@@ -140,17 +135,15 @@ message CircuitBreaker {
         bool failure = 1;
     }
 
-    // Key is always present.
-    string key = 1;
-    // Configuration is present in Describe responses and Update requests. If it's present on
+    // Config is present in Describe responses and Update requests. If it's present on
     // tasks, it sets the default configuration for the flow controller (if it hasn't been
     // configured with the Update api).
-    Configuration configuration = 2;
+    Config config = 1;
     // State is present in Describe responses.
-    State state = 3;
+    State state = 2;
     // Task may be present when attached to tasks or on task completions that change the task
     // cost after completion.
-    Task task = 4;
+    Task task = 3;
 }
 
 // Controllers can be attached to activity executions. Each activity may have zero or more flow
@@ -163,10 +156,12 @@ message CircuitBreaker {
 // concurrency controller with key `limit1` and rate controller with key `limit1` are
 // independent.
 message Controller {
+    // Key is always present. It identifies the controller within its (namespace, type) scope.
+    string key = 1;
     oneof controller {
-        HardConcurrency hard_concurrency = 1;
-        SoftConcurrency soft_concurrency = 2;
-        Rate rate = 3;
-        CircuitBreaker circuit_breaker = 4;
+        HardConcurrency hard_concurrency = 2;
+        SoftConcurrency soft_concurrency = 3;
+        Rate rate = 4;
+        CircuitBreaker circuit_breaker = 5;
     }
 }

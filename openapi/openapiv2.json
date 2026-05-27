@@ -1660,6 +1660,250 @@
         ]
       }
     },
+    "/api/v1/namespaces/{namespace}/flow-controllers/{flowController.key}": {
+      "get": {
+        "summary": "Describes flow controller state.",
+        "operationId": "DescribeFlowController2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DescribeFlowControllerResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flowController.key",
+            "description": "Key is always present. It identifies the controller within its (namespace, type) scope.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flowController.hardConcurrency.config.slots",
+            "description": "Available slots.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.hardConcurrency.config.units",
+            "description": "Units for documentation only, not interpreted.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.hardConcurrency.state.holders",
+            "description": "Current number of holders.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.hardConcurrency.state.reservations",
+            "description": "Current number of reservations.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.hardConcurrency.task.taskCost",
+            "description": "How many slots does this task consume (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.config.slots",
+            "description": "Available slots.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.config.units",
+            "description": "Units for documentation only, not interpreted.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.softConcurrency.state.holders",
+            "description": "Current number of holders.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.state.reservations",
+            "description": "Current number of reservations.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.task.taskCost",
+            "description": "How many slots does this task consume (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.rate.config.rate",
+            "description": "Rate in tokens/second.",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "float"
+          },
+          {
+            "name": "flowController.rate.config.burst",
+            "description": "Allowed burst in tokens.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.rate.config.units",
+            "description": "Units for documentation only, not interpreted.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.rate.state.rateLastMinute",
+            "description": "Measured rate over the last approximately one minute.",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "float"
+          },
+          {
+            "name": "flowController.rate.task.cost",
+            "description": "How many tokens does this task consume (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.consecutiveFailures",
+            "description": "How many consecutive failures required to trip (default 5).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.maxRequests",
+            "description": "Maximum number of requests allowed to pass through when\nit is in half-open state (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.interval",
+            "description": "Cyclic period in closed state to clear the internal counts;\nif interval is 0, then it never clears the internal counts (default 0).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.timeout",
+            "description": "Period of open state before changing to half-open state (default 60s).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.circuitBreaker.state.state",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.circuitBreaker.task.failure",
+            "description": "Used on task completion only.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "WorkflowService"
+        ]
+      }
+    },
+    "/api/v1/namespaces/{namespace}/flow-controllers/{flowController.key}/update-config": {
+      "post": {
+        "summary": "Updates flow controller configuration.",
+        "operationId": "UpdateFlowControllerConfig2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateFlowControllerConfigResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flowController.key",
+            "description": "Key is always present. It identifies the controller within its (namespace, type) scope.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WorkflowServiceUpdateFlowControllerConfigBody"
+            }
+          }
+        ],
+        "tags": [
+          "WorkflowService"
+        ]
+      }
+    },
     "/api/v1/namespaces/{namespace}/nexus-operation-count": {
       "get": {
         "summary": "CountNexusOperationExecutions is a visibility API to count Nexus operations in a specific namespace.",
@@ -7205,6 +7449,250 @@
         ]
       }
     },
+    "/namespaces/{namespace}/flow-controllers/{flowController.key}": {
+      "get": {
+        "summary": "Describes flow controller state.",
+        "operationId": "DescribeFlowController",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DescribeFlowControllerResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flowController.key",
+            "description": "Key is always present. It identifies the controller within its (namespace, type) scope.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flowController.hardConcurrency.config.slots",
+            "description": "Available slots.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.hardConcurrency.config.units",
+            "description": "Units for documentation only, not interpreted.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.hardConcurrency.state.holders",
+            "description": "Current number of holders.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.hardConcurrency.state.reservations",
+            "description": "Current number of reservations.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.hardConcurrency.task.taskCost",
+            "description": "How many slots does this task consume (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.config.slots",
+            "description": "Available slots.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.config.units",
+            "description": "Units for documentation only, not interpreted.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.softConcurrency.state.holders",
+            "description": "Current number of holders.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.state.reservations",
+            "description": "Current number of reservations.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.softConcurrency.task.taskCost",
+            "description": "How many slots does this task consume (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.rate.config.rate",
+            "description": "Rate in tokens/second.",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "float"
+          },
+          {
+            "name": "flowController.rate.config.burst",
+            "description": "Allowed burst in tokens.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.rate.config.units",
+            "description": "Units for documentation only, not interpreted.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.rate.state.rateLastMinute",
+            "description": "Measured rate over the last approximately one minute.",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "float"
+          },
+          {
+            "name": "flowController.rate.task.cost",
+            "description": "How many tokens does this task consume (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.consecutiveFailures",
+            "description": "How many consecutive failures required to trip (default 5).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.maxRequests",
+            "description": "Maximum number of requests allowed to pass through when\nit is in half-open state (default 1).",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.interval",
+            "description": "Cyclic period in closed state to clear the internal counts;\nif interval is 0, then it never clears the internal counts (default 0).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.circuitBreaker.config.timeout",
+            "description": "Period of open state before changing to half-open state (default 60s).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.circuitBreaker.state.state",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "flowController.circuitBreaker.task.failure",
+            "description": "Used on task completion only.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "WorkflowService"
+        ]
+      }
+    },
+    "/namespaces/{namespace}/flow-controllers/{flowController.key}/update-config": {
+      "post": {
+        "summary": "Updates flow controller configuration.",
+        "operationId": "UpdateFlowControllerConfig",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateFlowControllerConfigResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "flowController.key",
+            "description": "Key is always present. It identifies the controller within its (namespace, type) scope.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WorkflowServiceUpdateFlowControllerConfigBody"
+            }
+          }
+        ],
+        "tags": [
+          "WorkflowService"
+        ]
+      }
+    },
     "/namespaces/{namespace}/nexus-operation-count": {
       "get": {
         "summary": "CountNexusOperationExecutions is a visibility API to count Nexus operations in a specific namespace.",
@@ -12150,6 +12638,14 @@
           "$ref": "#/definitions/v1Priority",
           "description": "Priority metadata."
         },
+        "flowControllers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Controller"
+          },
+          "description": "Flow controllers attached to this activity."
+        },
         "completionCallbacks": {
           "type": "array",
           "items": {
@@ -12683,6 +13179,32 @@
         }
       },
       "description": "NOTE: keep in sync with temporal.api.batch.v1.BatchOperationUpdateActivityOptions\nDeprecated. Use `UpdateActivityExecutionOptionsRequest`."
+    },
+    "WorkflowServiceUpdateFlowControllerConfigBody": {
+      "type": "object",
+      "properties": {
+        "identity": {
+          "type": "string"
+        },
+        "flowController": {
+          "type": "object",
+          "properties": {
+            "hardConcurrency": {
+              "$ref": "#/definitions/v1HardConcurrency"
+            },
+            "softConcurrency": {
+              "$ref": "#/definitions/v1SoftConcurrency"
+            },
+            "rate": {
+              "$ref": "#/definitions/v1Rate"
+            },
+            "circuitBreaker": {
+              "$ref": "#/definitions/v1CircuitBreaker"
+            }
+          },
+          "description": "Controllers can be attached to activity executions. Each activity may have zero or more flow\ncontrollers, up to some configured limit. The default configuration of the controller may be\nprovided inline with the request to use that controller for simplicity, but the configuration\nmay also be updated by calls to UpdateFlowControllerConfig, which will override the inline\nconfiguration.\n\nFlow controllers are keyed, and the keys have namespace+controller type scope, i.e. the hard\nconcurrency controller with key `limit1` and rate controller with key `limit1` are\nindependent."
+        }
+      }
     },
     "WorkflowServiceUpdateNamespaceBody": {
       "type": "object",
@@ -13286,6 +13808,14 @@
           "$ref": "#/definitions/v1Priority",
           "description": "Priority metadata."
         },
+        "flowControllers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Controller"
+          },
+          "description": "Flow controllers attached to this activity."
+        },
         "stateTransitionCount": {
           "type": "string",
           "format": "int64",
@@ -13491,6 +14021,14 @@
         "priority": {
           "$ref": "#/definitions/v1Priority",
           "description": "Priority metadata. If this message is not present, or any fields are not\npresent, they inherit the values from the workflow."
+        },
+        "flowControllers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Controller"
+          },
+          "description": "Flow controllers attached to this activity."
         }
       }
     },
@@ -13663,6 +14201,14 @@
         "priority": {
           "$ref": "#/definitions/v1Priority",
           "description": "Priority metadata. If this message is not present, or any fields are not\npresent, they inherit the values from the workflow."
+        },
+        "flowControllers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Controller"
+          },
+          "description": "Flow controllers attached to this activity."
         }
       }
     },
@@ -14414,6 +14960,64 @@
         }
       }
     },
+    "v1CircuitBreaker": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/v1CircuitBreakerConfig",
+          "description": "Config is present in Describe responses and Update requests. If it's present on\ntasks, it sets the default configuration for the flow controller (if it hasn't been\nconfigured with the Update api)."
+        },
+        "state": {
+          "$ref": "#/definitions/v1CircuitBreakerState",
+          "description": "State is present in Describe responses."
+        },
+        "task": {
+          "$ref": "#/definitions/v1CircuitBreakerTask",
+          "description": "Task may be present when attached to tasks or on task completions that change the task\ncost after completion."
+        }
+      },
+      "description": "CircuitBreaker implements circuit breaker logic that trips on a number of consecutive\nfailures and tries a small number of tasks at a time to probe for recovery."
+    },
+    "v1CircuitBreakerConfig": {
+      "type": "object",
+      "properties": {
+        "consecutiveFailures": {
+          "type": "integer",
+          "format": "int32",
+          "description": "How many consecutive failures required to trip (default 5)."
+        },
+        "maxRequests": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum number of requests allowed to pass through when\nit is in half-open state (default 1)."
+        },
+        "interval": {
+          "type": "string",
+          "description": "Cyclic period in closed state to clear the internal counts;\nif interval is 0, then it never clears the internal counts (default 0)."
+        },
+        "timeout": {
+          "type": "string",
+          "description": "Period of open state before changing to half-open state (default 60s)."
+        }
+      }
+    },
+    "v1CircuitBreakerState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CircuitBreakerTask": {
+      "type": "object",
+      "properties": {
+        "failure": {
+          "type": "boolean",
+          "description": "Used on task completion only."
+        }
+      }
+    },
     "v1ClusterReplicationConfig": {
       "type": "object",
       "properties": {
@@ -14589,6 +15193,28 @@
       ],
       "default": "CONTINUE_AS_NEW_VERSIONING_BEHAVIOR_UNSPECIFIED",
       "description": "Experimental. Defines the versioning behavior to be used by the first task of a new workflow run in a continue-as-new chain.\n\n - CONTINUE_AS_NEW_VERSIONING_BEHAVIOR_AUTO_UPGRADE: Experimental.\nStart the new run with AutoUpgrade behavior. Use the Target Version of the workflow's task queue at\nstart-time, as AutoUpgrade workflows do. After the first workflow task completes, use whatever\nVersioning Behavior the workflow is annotated with in the workflow code.\n\nNote that if the workflow being continued has a Pinned override, that override will be inherited by the\nnew workflow run regardless of the ContinueAsNewVersioningBehavior specified in the continue-as-new\ncommand. Versioning Override always takes precedence until it's removed manually via UpdateWorkflowExecutionOptions.\n - CONTINUE_AS_NEW_VERSIONING_BEHAVIOR_USE_RAMPING_VERSION: Experimental.\nUse the Ramping Version of the workflow's task queue at start time, regardless of the workflow's\nTarget Version (according to f(workflow_id, ramp_percentage)). After the first workflow task completes,\nthe workflow will use whatever Versioning Behavior it is annotated with. If there is no Ramping\nVersion by the time that the first workflow task is dispatched, it will be sent to the Current Version.\n\nIt is highly discouraged to use this if the workflow is annotated with AutoUpgrade behavior, because\nthis setting ONLY applies to the first task of the workflow. If, after the first task, the workflow\nis AutoUpgrade, it will behave like a normal AutoUpgrade workflow and go to the Target Version, which\nmay be the Current Version instead of the Ramping Version.\n\nNote that if the workflow being continued has a Pinned override, that override will be inherited by the\nnew workflow run regardless of the ContinueAsNewVersioningBehavior specified in the continue-as-new\ncommand. Versioning Override always takes precedence until it's removed manually via UpdateWorkflowExecutionOptions."
+    },
+    "v1Controller": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Key is always present. It identifies the controller within its (namespace, type) scope."
+        },
+        "hardConcurrency": {
+          "$ref": "#/definitions/v1HardConcurrency"
+        },
+        "softConcurrency": {
+          "$ref": "#/definitions/v1SoftConcurrency"
+        },
+        "rate": {
+          "$ref": "#/definitions/v1Rate"
+        },
+        "circuitBreaker": {
+          "$ref": "#/definitions/v1CircuitBreaker"
+        }
+      },
+      "description": "Controllers can be attached to activity executions. Each activity may have zero or more flow\ncontrollers, up to some configured limit. The default configuration of the controller may be\nprovided inline with the request to use that controller for simplicity, but the configuration\nmay also be updated by calls to UpdateFlowControllerConfig, which will override the inline\nconfiguration.\n\nFlow controllers are keyed, and the keys have namespace+controller type scope, i.e. the hard\nconcurrency controller with key `limit1` and rate controller with key `limit1` are\nindependent."
     },
     "v1CountActivityExecutionsResponse": {
       "type": "object",
@@ -15009,6 +15635,14 @@
         }
       },
       "title": "[cleanup-wv-pre-release] Pre-release deployment APIs, clean up later"
+    },
+    "v1DescribeFlowControllerResponse": {
+      "type": "object",
+      "properties": {
+        "flowController": {
+          "$ref": "#/definitions/v1Controller"
+        }
+      }
     },
     "v1DescribeNamespaceResponse": {
       "type": "object",
@@ -15739,6 +16373,63 @@
           "type": "string",
           "format": "byte",
           "title": "Will be set if there are more history events than were included in this response"
+        }
+      }
+    },
+    "v1HardConcurrency": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/v1HardConcurrencyConfig",
+          "description": "Config is present in Describe responses and Update requests. If it's present on\ntasks, it sets the default configuration for the flow controller (if it hasn't been\nconfigured with the Update api)."
+        },
+        "state": {
+          "$ref": "#/definitions/v1HardConcurrencyState",
+          "description": "State is present in Describe responses."
+        },
+        "task": {
+          "$ref": "#/definitions/v1HardConcurrencyTask",
+          "description": "Task may be present when attached to tasks or on task completions that change the task\ncost after completion."
+        }
+      },
+      "description": "HardConcurrency is a concurrency limit that may not be exceeded. Certain failures may\nresult in temporary under-utilization."
+    },
+    "v1HardConcurrencyConfig": {
+      "type": "object",
+      "properties": {
+        "slots": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Available slots."
+        },
+        "units": {
+          "type": "string",
+          "description": "Units for documentation only, not interpreted."
+        }
+      }
+    },
+    "v1HardConcurrencyState": {
+      "type": "object",
+      "properties": {
+        "holders": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current number of holders."
+        },
+        "reservations": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current number of reservations."
+        }
+      }
+    },
+    "v1HardConcurrencyTask": {
+      "type": "object",
+      "properties": {
+        "taskCost": {
+          "type": "integer",
+          "format": "int32",
+          "description": "How many slots does this task consume (default 1)."
         }
       }
     },
@@ -17379,6 +18070,14 @@
           "$ref": "#/definitions/v1Priority",
           "description": "Priority metadata. If this message is not present, or any fields are not\npresent, they inherit the values from the workflow."
         },
+        "flowControllers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Controller"
+          },
+          "description": "Flow controllers attached to this activity."
+        },
         "pauseInfo": {
           "$ref": "#/definitions/PendingActivityInfoPauseInfo"
         },
@@ -17844,6 +18543,43 @@
       },
       "description": "Range represents a set of integer values, used to match fields of a calendar\ntime in StructuredCalendarSpec. If end < start, then end is interpreted as\nequal to start. This means you can use a Range with start set to a value, and\nend and step unset (defaulting to 0) to represent a single value."
     },
+    "v1Rate": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/v1RateConfig",
+          "description": "Config is present in Describe responses and Update requests. If it's present on\ntasks, it sets the default configuration for the flow controller (if it hasn't been\nconfigured with the Update api)."
+        },
+        "state": {
+          "$ref": "#/definitions/v1RateState",
+          "description": "State is present in Describe responses."
+        },
+        "task": {
+          "$ref": "#/definitions/v1RateTask",
+          "description": "Task may be present when attached to tasks or on task completions that change the task\ncost after completion."
+        }
+      },
+      "description": "Rate is a rate limit, using a token-bucket algorithm or equivalent."
+    },
+    "v1RateConfig": {
+      "type": "object",
+      "properties": {
+        "rate": {
+          "type": "number",
+          "format": "float",
+          "description": "Rate in tokens/second."
+        },
+        "burst": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Allowed burst in tokens."
+        },
+        "units": {
+          "type": "string",
+          "description": "Units for documentation only, not interpreted."
+        }
+      }
+    },
     "v1RateLimit": {
       "type": "object",
       "properties": {
@@ -17875,6 +18611,26 @@
       ],
       "default": "RATE_LIMIT_SOURCE_UNSPECIFIED",
       "description": "Source for the effective rate limit.\n\n - RATE_LIMIT_SOURCE_API: The value was set by the API.\n - RATE_LIMIT_SOURCE_WORKER: The value was set by a worker.\n - RATE_LIMIT_SOURCE_SYSTEM: The value was set as the system default."
+    },
+    "v1RateState": {
+      "type": "object",
+      "properties": {
+        "rateLastMinute": {
+          "type": "number",
+          "format": "float",
+          "description": "Measured rate over the last approximately one minute."
+        }
+      }
+    },
+    "v1RateTask": {
+      "type": "object",
+      "properties": {
+        "cost": {
+          "type": "integer",
+          "format": "int32",
+          "description": "How many tokens does this task consume (default 1)."
+        }
+      }
     },
     "v1RecordActivityTaskHeartbeatByIdResponse": {
       "type": "object",
@@ -18941,6 +19697,63 @@
         }
       }
     },
+    "v1SoftConcurrency": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/v1SoftConcurrencyConfig",
+          "description": "Config is present in Describe responses and Update requests. If it's present on\ntasks, it sets the default configuration for the flow controller (if it hasn't been\nconfigured with the Update api)."
+        },
+        "state": {
+          "$ref": "#/definitions/v1SoftConcurrencyState",
+          "description": "State is present in Describe responses."
+        },
+        "task": {
+          "$ref": "#/definitions/v1SoftConcurrencyTask",
+          "description": "Task may be present when attached to tasks or on task completions that change the task\ncost after completion."
+        }
+      },
+      "description": "SoftConcurrency is a concurrency limit that be exceeded under certain failure conditions.\nIt uses fewer durable transactions than HardConcurrency so it may be less expensive."
+    },
+    "v1SoftConcurrencyConfig": {
+      "type": "object",
+      "properties": {
+        "slots": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Available slots."
+        },
+        "units": {
+          "type": "string",
+          "description": "Units for documentation only, not interpreted."
+        }
+      }
+    },
+    "v1SoftConcurrencyState": {
+      "type": "object",
+      "properties": {
+        "holders": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current number of holders."
+        },
+        "reservations": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current number of reservations."
+        }
+      }
+    },
+    "v1SoftConcurrencyTask": {
+      "type": "object",
+      "properties": {
+        "taskCost": {
+          "type": "integer",
+          "format": "int32",
+          "description": "How many slots does this task consume (default 1)."
+        }
+      }
+    },
     "v1StartActivityExecutionResponse": {
       "type": "object",
       "properties": {
@@ -19669,6 +20482,9 @@
         }
       },
       "description": "Used as part of Deployment write APIs to update metadata attached to a deployment.\nDeprecated."
+    },
+    "v1UpdateFlowControllerConfigResponse": {
+      "type": "object"
     },
     "v1UpdateNamespaceInfo": {
       "type": "object",

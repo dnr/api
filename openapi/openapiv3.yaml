@@ -1539,6 +1539,203 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+  /api/v1/namespaces/{namespace}/flow-controllers/{flow_controller.key}:
+    get:
+      tags:
+        - WorkflowService
+      description: Describes flow controller state.
+      operationId: DescribeFlowController
+      parameters:
+        - name: namespace
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: flow_controller.key
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: flowController.key
+          in: query
+          description: Key is always present. It identifies the controller within its (namespace, type) scope.
+          schema:
+            type: string
+        - name: flowController.hardConcurrency.config.slots
+          in: query
+          description: Available slots.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.hardConcurrency.config.units
+          in: query
+          description: Units for documentation only, not interpreted.
+          schema:
+            type: string
+        - name: flowController.hardConcurrency.state.holders
+          in: query
+          description: Current number of holders.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.hardConcurrency.state.reservations
+          in: query
+          description: Current number of reservations.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.hardConcurrency.task.taskCost
+          in: query
+          description: How many slots does this task consume (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.config.slots
+          in: query
+          description: Available slots.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.config.units
+          in: query
+          description: Units for documentation only, not interpreted.
+          schema:
+            type: string
+        - name: flowController.softConcurrency.state.holders
+          in: query
+          description: Current number of holders.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.state.reservations
+          in: query
+          description: Current number of reservations.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.task.taskCost
+          in: query
+          description: How many slots does this task consume (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.rate.config.rate
+          in: query
+          description: Rate in tokens/second.
+          schema:
+            type: number
+            format: float
+        - name: flowController.rate.config.burst
+          in: query
+          description: Allowed burst in tokens.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.rate.config.units
+          in: query
+          description: Units for documentation only, not interpreted.
+          schema:
+            type: string
+        - name: flowController.rate.state.rateLastMinute
+          in: query
+          description: Measured rate over the last approximately one minute.
+          schema:
+            type: number
+            format: float
+        - name: flowController.rate.task.cost
+          in: query
+          description: How many tokens does this task consume (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.circuitBreaker.config.consecutiveFailures
+          in: query
+          description: How many consecutive failures required to trip (default 5).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.circuitBreaker.config.maxRequests
+          in: query
+          description: |-
+            Maximum number of requests allowed to pass through when
+             it is in half-open state (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.circuitBreaker.config.interval
+          in: query
+          description: |-
+            Cyclic period in closed state to clear the internal counts;
+             if interval is 0, then it never clears the internal counts (default 0).
+          schema:
+            pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
+            type: string
+            description: Represents a a duration between -315,576,000,000s and 315,576,000,000s (around 10000 years). Precision is in nanoseconds. 1 nanosecond is represented as 0.000000001s
+        - name: flowController.circuitBreaker.config.timeout
+          in: query
+          description: Period of open state before changing to half-open state (default 60s).
+          schema:
+            pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
+            type: string
+            description: Represents a a duration between -315,576,000,000s and 315,576,000,000s (around 10000 years). Precision is in nanoseconds. 1 nanosecond is represented as 0.000000001s
+        - name: flowController.circuitBreaker.state.state
+          in: query
+          schema:
+            type: string
+        - name: flowController.circuitBreaker.task.failure
+          in: query
+          description: Used on task completion only.
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescribeFlowControllerResponse'
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /api/v1/namespaces/{namespace}/flow-controllers/{flow_controller.key}/update-config:
+    post:
+      tags:
+        - WorkflowService
+      description: Updates flow controller configuration.
+      operationId: UpdateFlowControllerConfig
+      parameters:
+        - name: namespace
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: flow_controller.key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFlowControllerConfigRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateFlowControllerConfigResponse'
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
   /api/v1/namespaces/{namespace}/nexus-operation-count:
     get:
       tags:
@@ -6544,6 +6741,203 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+  /namespaces/{namespace}/flow-controllers/{flow_controller.key}:
+    get:
+      tags:
+        - WorkflowService
+      description: Describes flow controller state.
+      operationId: DescribeFlowController
+      parameters:
+        - name: namespace
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: flow_controller.key
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: flowController.key
+          in: query
+          description: Key is always present. It identifies the controller within its (namespace, type) scope.
+          schema:
+            type: string
+        - name: flowController.hardConcurrency.config.slots
+          in: query
+          description: Available slots.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.hardConcurrency.config.units
+          in: query
+          description: Units for documentation only, not interpreted.
+          schema:
+            type: string
+        - name: flowController.hardConcurrency.state.holders
+          in: query
+          description: Current number of holders.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.hardConcurrency.state.reservations
+          in: query
+          description: Current number of reservations.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.hardConcurrency.task.taskCost
+          in: query
+          description: How many slots does this task consume (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.config.slots
+          in: query
+          description: Available slots.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.config.units
+          in: query
+          description: Units for documentation only, not interpreted.
+          schema:
+            type: string
+        - name: flowController.softConcurrency.state.holders
+          in: query
+          description: Current number of holders.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.state.reservations
+          in: query
+          description: Current number of reservations.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.softConcurrency.task.taskCost
+          in: query
+          description: How many slots does this task consume (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.rate.config.rate
+          in: query
+          description: Rate in tokens/second.
+          schema:
+            type: number
+            format: float
+        - name: flowController.rate.config.burst
+          in: query
+          description: Allowed burst in tokens.
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.rate.config.units
+          in: query
+          description: Units for documentation only, not interpreted.
+          schema:
+            type: string
+        - name: flowController.rate.state.rateLastMinute
+          in: query
+          description: Measured rate over the last approximately one minute.
+          schema:
+            type: number
+            format: float
+        - name: flowController.rate.task.cost
+          in: query
+          description: How many tokens does this task consume (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.circuitBreaker.config.consecutiveFailures
+          in: query
+          description: How many consecutive failures required to trip (default 5).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.circuitBreaker.config.maxRequests
+          in: query
+          description: |-
+            Maximum number of requests allowed to pass through when
+             it is in half-open state (default 1).
+          schema:
+            type: integer
+            format: int32
+        - name: flowController.circuitBreaker.config.interval
+          in: query
+          description: |-
+            Cyclic period in closed state to clear the internal counts;
+             if interval is 0, then it never clears the internal counts (default 0).
+          schema:
+            pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
+            type: string
+            description: Represents a a duration between -315,576,000,000s and 315,576,000,000s (around 10000 years). Precision is in nanoseconds. 1 nanosecond is represented as 0.000000001s
+        - name: flowController.circuitBreaker.config.timeout
+          in: query
+          description: Period of open state before changing to half-open state (default 60s).
+          schema:
+            pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
+            type: string
+            description: Represents a a duration between -315,576,000,000s and 315,576,000,000s (around 10000 years). Precision is in nanoseconds. 1 nanosecond is represented as 0.000000001s
+        - name: flowController.circuitBreaker.state.state
+          in: query
+          schema:
+            type: string
+        - name: flowController.circuitBreaker.task.failure
+          in: query
+          description: Used on task completion only.
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescribeFlowControllerResponse'
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /namespaces/{namespace}/flow-controllers/{flow_controller.key}/update-config:
+    post:
+      tags:
+        - WorkflowService
+      description: Updates flow controller configuration.
+      operationId: UpdateFlowControllerConfig
+      parameters:
+        - name: namespace
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: flow_controller.key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFlowControllerConfigRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateFlowControllerConfigResponse'
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
   /namespaces/{namespace}/nexus-operation-count:
     get:
       tags:
@@ -9711,6 +10105,11 @@ components:
           allOf:
             - $ref: '#/components/schemas/Priority'
           description: Priority metadata.
+        flowControllers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Controller'
+          description: Flow controllers attached to this activity.
         stateTransitionCount:
           type: string
           description: Incremented each time the activity's state is mutated in persistence.
@@ -9891,6 +10290,11 @@ components:
           description: |-
             Priority metadata. If this message is not present, or any fields are not
              present, they inherit the values from the workflow.
+        flowControllers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Controller'
+          description: Flow controllers attached to this activity.
     ActivityPropertiesModifiedExternallyEventAttributes:
       type: object
       properties:
@@ -10065,6 +10469,11 @@ components:
           description: |-
             Priority metadata. If this message is not present, or any fields are not
              present, they inherit the values from the workflow.
+        flowControllers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Controller'
+          description: Flow controllers attached to this activity.
     ActivityTaskStartedEventAttributes:
       type: object
       properties:
@@ -10819,6 +11228,63 @@ components:
             - RETRY_STATE_CANCEL_REQUESTED
           type: string
           format: enum
+    CircuitBreaker:
+      type: object
+      properties:
+        config:
+          allOf:
+            - $ref: '#/components/schemas/CircuitBreaker_Config'
+          description: |-
+            Config is present in Describe responses and Update requests. If it's present on
+             tasks, it sets the default configuration for the flow controller (if it hasn't been
+             configured with the Update api).
+        state:
+          allOf:
+            - $ref: '#/components/schemas/CircuitBreaker_State'
+          description: State is present in Describe responses.
+        task:
+          allOf:
+            - $ref: '#/components/schemas/CircuitBreaker_Task'
+          description: |-
+            Task may be present when attached to tasks or on task completions that change the task
+             cost after completion.
+      description: |-
+        CircuitBreaker implements circuit breaker logic that trips on a number of consecutive
+         failures and tries a small number of tasks at a time to probe for recovery.
+    CircuitBreaker_Config:
+      type: object
+      properties:
+        consecutiveFailures:
+          type: integer
+          description: How many consecutive failures required to trip (default 5).
+          format: int32
+        maxRequests:
+          type: integer
+          description: |-
+            Maximum number of requests allowed to pass through when
+             it is in half-open state (default 1).
+          format: int32
+        interval:
+          pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
+          type: string
+          description: |-
+            Cyclic period in closed state to clear the internal counts;
+             if interval is 0, then it never clears the internal counts (default 0).
+        timeout:
+          pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
+          type: string
+          description: Period of open state before changing to half-open state (default 60s).
+    CircuitBreaker_State:
+      type: object
+      properties:
+        state:
+          type: string
+    CircuitBreaker_Task:
+      type: object
+      properties:
+        failure:
+          type: boolean
+          description: Used on task completion only.
     ClusterReplicationConfig:
       type: object
       properties:
@@ -11020,6 +11486,30 @@ components:
           type: string
           description: Time of the last update.
           format: date-time
+    Controller:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Key is always present. It identifies the controller within its (namespace, type) scope.
+        hardConcurrency:
+          $ref: '#/components/schemas/HardConcurrency'
+        softConcurrency:
+          $ref: '#/components/schemas/SoftConcurrency'
+        rate:
+          $ref: '#/components/schemas/Rate'
+        circuitBreaker:
+          $ref: '#/components/schemas/CircuitBreaker'
+      description: |-
+        Controllers can be attached to activity executions. Each activity may have zero or more flow
+         controllers, up to some configured limit. The default configuration of the controller may be
+         provided inline with the request to use that controller for simplicity, but the configuration
+         may also be updated by calls to UpdateFlowControllerConfig, which will override the inline
+         configuration.
+
+         Flow controllers are keyed, and the keys have namespace+controller type scope, i.e. the hard
+         concurrency controller with key `limit1` and rate controller with key `limit1` are
+         independent.
     CountActivityExecutionsResponse:
       type: object
       properties:
@@ -11508,6 +11998,11 @@ components:
         deploymentInfo:
           $ref: '#/components/schemas/DeploymentInfo'
       description: '[cleanup-wv-pre-release] Pre-release deployment APIs, clean up later'
+    DescribeFlowControllerResponse:
+      type: object
+      properties:
+        flowController:
+          $ref: '#/components/schemas/Controller'
     DescribeNamespaceResponse:
       type: object
       properties:
@@ -12179,6 +12674,57 @@ components:
           description: The type of the serialized message.
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+    HardConcurrency:
+      type: object
+      properties:
+        config:
+          allOf:
+            - $ref: '#/components/schemas/HardConcurrency_Config'
+          description: |-
+            Config is present in Describe responses and Update requests. If it's present on
+             tasks, it sets the default configuration for the flow controller (if it hasn't been
+             configured with the Update api).
+        state:
+          allOf:
+            - $ref: '#/components/schemas/HardConcurrency_State'
+          description: State is present in Describe responses.
+        task:
+          allOf:
+            - $ref: '#/components/schemas/HardConcurrency_Task'
+          description: |-
+            Task may be present when attached to tasks or on task completions that change the task
+             cost after completion.
+      description: |-
+        HardConcurrency is a concurrency limit that may not be exceeded. Certain failures may
+         result in temporary under-utilization.
+    HardConcurrency_Config:
+      type: object
+      properties:
+        slots:
+          type: integer
+          description: Available slots.
+          format: int32
+        units:
+          type: string
+          description: Units for documentation only, not interpreted.
+    HardConcurrency_State:
+      type: object
+      properties:
+        holders:
+          type: integer
+          description: Current number of holders.
+          format: int32
+        reservations:
+          type: integer
+          description: Current number of reservations.
+          format: int32
+    HardConcurrency_Task:
+      type: object
+      properties:
+        taskCost:
+          type: integer
+          description: How many slots does this task consume (default 1).
+          format: int32
     Header:
       type: object
       properties:
@@ -13848,6 +14394,11 @@ components:
           description: |-
             Priority metadata. If this message is not present, or any fields are not
              present, they inherit the values from the workflow.
+        flowControllers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Controller'
+          description: Flow controllers attached to this activity.
         pauseInfo:
           $ref: '#/components/schemas/PendingActivityInfo_PauseInfo'
         activityOptions:
@@ -14418,6 +14969,27 @@ components:
          time in StructuredCalendarSpec. If end < start, then end is interpreted as
          equal to start. This means you can use a Range with start set to a value, and
          end and step unset (defaulting to 0) to represent a single value.
+    Rate:
+      type: object
+      properties:
+        config:
+          allOf:
+            - $ref: '#/components/schemas/Rate_Config'
+          description: |-
+            Config is present in Describe responses and Update requests. If it's present on
+             tasks, it sets the default configuration for the flow controller (if it hasn't been
+             configured with the Update api).
+        state:
+          allOf:
+            - $ref: '#/components/schemas/Rate_State'
+          description: State is present in Describe responses.
+        task:
+          allOf:
+            - $ref: '#/components/schemas/Rate_Task'
+          description: |-
+            Task may be present when attached to tasks or on task completions that change the task
+             cost after completion.
+      description: Rate is a rate limit, using a token-bucket algorithm or equivalent.
     RateLimit:
       type: object
       properties:
@@ -14432,6 +15004,34 @@ components:
           $ref: '#/components/schemas/RateLimit'
         metadata:
           $ref: '#/components/schemas/ConfigMetadata'
+    Rate_Config:
+      type: object
+      properties:
+        rate:
+          type: number
+          description: Rate in tokens/second.
+          format: float
+        burst:
+          type: integer
+          description: Allowed burst in tokens.
+          format: int32
+        units:
+          type: string
+          description: Units for documentation only, not interpreted.
+    Rate_State:
+      type: object
+      properties:
+        rateLastMinute:
+          type: number
+          description: Measured rate over the last approximately one minute.
+          format: float
+    Rate_Task:
+      type: object
+      properties:
+        cost:
+          type: integer
+          description: How many tokens does this task consume (default 1).
+          format: int32
     RecordActivityTaskHeartbeatByIdRequest:
       type: object
       properties:
@@ -16252,6 +16852,57 @@ components:
             Link to be associated with the WorkflowExecutionSignaled event.
              Added on the response to propagate the backlink.
              Available from Temporal server 1.31 and up.
+    SoftConcurrency:
+      type: object
+      properties:
+        config:
+          allOf:
+            - $ref: '#/components/schemas/SoftConcurrency_Config'
+          description: |-
+            Config is present in Describe responses and Update requests. If it's present on
+             tasks, it sets the default configuration for the flow controller (if it hasn't been
+             configured with the Update api).
+        state:
+          allOf:
+            - $ref: '#/components/schemas/SoftConcurrency_State'
+          description: State is present in Describe responses.
+        task:
+          allOf:
+            - $ref: '#/components/schemas/SoftConcurrency_Task'
+          description: |-
+            Task may be present when attached to tasks or on task completions that change the task
+             cost after completion.
+      description: |-
+        SoftConcurrency is a concurrency limit that be exceeded under certain failure conditions.
+         It uses fewer durable transactions than HardConcurrency so it may be less expensive.
+    SoftConcurrency_Config:
+      type: object
+      properties:
+        slots:
+          type: integer
+          description: Available slots.
+          format: int32
+        units:
+          type: string
+          description: Units for documentation only, not interpreted.
+    SoftConcurrency_State:
+      type: object
+      properties:
+        holders:
+          type: integer
+          description: Current number of holders.
+          format: int32
+        reservations:
+          type: integer
+          description: Current number of reservations.
+          format: int32
+    SoftConcurrency_Task:
+      type: object
+      properties:
+        taskCost:
+          type: integer
+          description: How many slots does this task consume (default 1).
+          format: int32
     StartActivityExecutionRequest:
       type: object
       properties:
@@ -16355,6 +17006,11 @@ components:
           allOf:
             - $ref: '#/components/schemas/Priority'
           description: Priority metadata.
+        flowControllers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Controller'
+          description: Flow controllers attached to this activity.
         completionCallbacks:
           type: array
           items:
@@ -17584,6 +18240,18 @@ components:
       description: |-
         Used as part of Deployment write APIs to update metadata attached to a deployment.
          Deprecated.
+    UpdateFlowControllerConfigRequest:
+      type: object
+      properties:
+        namespace:
+          type: string
+        identity:
+          type: string
+        flowController:
+          $ref: '#/components/schemas/Controller'
+    UpdateFlowControllerConfigResponse:
+      type: object
+      properties: {}
     UpdateNamespaceInfo:
       type: object
       properties:
